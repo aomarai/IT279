@@ -176,7 +176,7 @@ template <typename Comparable>
 void BinarySearchTree<Comparable>::insert(const Comparable &x, Student<string> &val, BinaryNode *&t)
 {
     if( t == nullptr )
-        t = new BinaryNode{ x, nullptr, nullptr };
+        t = new BinaryNode{ x, val, nullptr, nullptr };
     else if( x < t->element )
         insert( x, t->left );
     else if( t->element < x )
@@ -245,8 +245,24 @@ bool BinarySearchTree<Comparable>::update(const Comparable &x, Student<string> &
 template <typename Comparable>
 bool BinarySearchTree<Comparable>::update(const Comparable &x, Student<string> &val, BinaryNode *&t)
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    if( t == nullptr )
+    {
+        return false;
+    }
+    else if( x < t->element )
+    {
+        return printNodeInfo( x, t->left );
+    }
+    else if( t->element < x )
+    {
+        return printNodeInfo( x, t->right );
+    }
+    else
+    {
+        //Update the student information inside the node
+        t->val = val;
+        return true; // Match
+    }
 }
 
 /**
@@ -257,8 +273,7 @@ bool BinarySearchTree<Comparable>::update(const Comparable &x, Student<string> &
 template <typename Comparable>
 bool BinarySearchTree<Comparable>::printNodeInfo(const Comparable &x) const
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    printNodeInfo(x, root);
 }
 
 /**
@@ -270,8 +285,24 @@ bool BinarySearchTree<Comparable>::printNodeInfo(const Comparable &x) const
 template <typename Comparable>
 bool BinarySearchTree<Comparable>::printNodeInfo(const Comparable &x, BinaryNode *t) const
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    if( t == nullptr )
+    {
+        cout << "Node " << x << " was not found" << endl;
+        return false;
+    }
+    else if( x < t->element )
+    {
+        return printNodeInfo( x, t->left );
+    }
+    else if( t->element < x )
+    {
+        return printNodeInfo( x, t->right );
+    }
+    else
+    {
+        cout << "Node Information: " << t->val << endl;
+        return true; // Match
+    }
 }
 
 /**
@@ -280,7 +311,7 @@ bool BinarySearchTree<Comparable>::printNodeInfo(const Comparable &x, BinaryNode
 template <typename Comparable>
 void BinarySearchTree<Comparable>::printTree(ostream &out)
 {
-    // Add your code
+    print(root, out);
 }
 
 /**
