@@ -87,8 +87,7 @@ void BinarySearchTree<Comparable>::makeEmpty(BinaryNode *&t) const
 template <typename Comparable>
 typename BinarySearchTree<Comparable>::BinaryNode *BinarySearchTree<Comparable>::findMin() const
 {
-    // Add your code: you can delete or modify the following code line
-    return nullptr;
+    return findMin(root);
 }
 
 /**
@@ -99,8 +98,7 @@ typename BinarySearchTree<Comparable>::BinaryNode *BinarySearchTree<Comparable>:
 template <typename Comparable>
 typename BinarySearchTree<Comparable>::BinaryNode *BinarySearchTree<Comparable>::findMax() const
 {
-    // Add your code: you can delete or modify the following code line
-    return nullptr;
+    return findMax(root);
 }
 
 /**
@@ -110,8 +108,11 @@ typename BinarySearchTree<Comparable>::BinaryNode *BinarySearchTree<Comparable>:
 template <typename Comparable>
 typename BinarySearchTree<Comparable>::BinaryNode *BinarySearchTree<Comparable>::findMin(BinaryNode *t) const
 {
-    // Add your code: you can delete or modify the following code line
-    return nullptr;
+    if( t == nullptr )
+        return nullptr;
+    if( t->left == nullptr )
+        return t;
+    return findMin( t->left );
 }
 
 /**
@@ -121,8 +122,10 @@ typename BinarySearchTree<Comparable>::BinaryNode *BinarySearchTree<Comparable>:
 template <typename Comparable>
 typename BinarySearchTree<Comparable>::BinaryNode *BinarySearchTree<Comparable>::findMax(BinaryNode *t) const
 {
-    // Add your code: you can delete or modify the following code line
-    return nullptr;
+    if( t != nullptr )
+        while( t->right != nullptr )
+            t = t->right;
+    return t;
 }
 
 /**
@@ -131,8 +134,7 @@ typename BinarySearchTree<Comparable>::BinaryNode *BinarySearchTree<Comparable>:
 template <typename Comparable>
 bool BinarySearchTree<Comparable>::contains(const Comparable &x) const
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    return contains(x, root);
 }
 
 /**
@@ -143,8 +145,14 @@ bool BinarySearchTree<Comparable>::contains(const Comparable &x) const
 template <typename Comparable>
 bool BinarySearchTree<Comparable>::contains(const Comparable &x, BinaryNode *t) const
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    if( t == nullptr )
+        return false;
+    else if( x < t->element )
+        return contains( x, t->left );
+    else if( t->element < x )
+        return contains( x, t->right );
+    else
+        return true; // Match
 }
 
 /**
@@ -155,7 +163,7 @@ bool BinarySearchTree<Comparable>::contains(const Comparable &x, BinaryNode *t) 
 template <typename Comparable>
 void BinarySearchTree<Comparable>::insert(const Comparable &x, Student<string> &val)
 {
-    // Add your code
+    insert (x, val, root);
 }
 
 /**
@@ -167,7 +175,14 @@ void BinarySearchTree<Comparable>::insert(const Comparable &x, Student<string> &
 template <typename Comparable>
 void BinarySearchTree<Comparable>::insert(const Comparable &x, Student<string> &val, BinaryNode *&t)
 {
-    // Add your code
+    if( t == nullptr )
+        t = new BinaryNode{ x, nullptr, nullptr };
+    else if( x < t->element )
+        insert( x, t->left );
+    else if( t->element < x )
+        insert( x, t->right );
+    else
+    ; // Duplicate; do nothing
 }
 
 /**
@@ -176,7 +191,10 @@ void BinarySearchTree<Comparable>::insert(const Comparable &x, Student<string> &
 template <typename Comparable>
 void BinarySearchTree<Comparable>::remove(const Comparable &x)
 {
-    // Add your code
+    if (contains(x))
+    {
+        remove (x, root);
+    }
 }
 
 /**
@@ -188,7 +206,23 @@ void BinarySearchTree<Comparable>::remove(const Comparable &x)
 template <typename Comparable>
 void BinarySearchTree<Comparable>::remove(const Comparable &x, BinaryNode *&t)
 {
-    // Add your code
+    if( t == nullptr )
+        return; // Item not found; do nothing
+    if( x < t->element )
+        remove( x, t->left );
+    else if( t->element < x )
+        remove( x, t->right );
+    else if( t->left != nullptr && t->right != nullptr ) // Two children
+    {
+        t->element = findMin( t->right )->element;
+        remove( t->element, t->right );
+    }
+    else
+    {
+        BinaryNode *oldNode = t;
+        t = ( t->left != nullptr ) ? t->left : t->right;
+        delete oldNode;
+    }
 }
 
 /**
@@ -197,8 +231,7 @@ void BinarySearchTree<Comparable>::remove(const Comparable &x, BinaryNode *&t)
 template <typename Comparable>
 bool BinarySearchTree<Comparable>::update(const Comparable &x, Student<string> &val)
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    return update(x, val, root);
 }
 
 /**
