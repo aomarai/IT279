@@ -3,56 +3,55 @@
 template <typename Comparable>
 Student<Comparable>::Student()
 {
-    // Add your code
+    fname = "";
+    lname = "";
+    department = "";
+    gpa = "";
 }
 
 template <typename Comparable>
 string Student<Comparable>::getFirstName()
 {
-    // Add your code: you can delete or modify the following code line
-    return string();
+    return fname;
 }
 
 template <typename Comparable>
 string Student<Comparable>::getLastName()
 {
-    // Add your code: you can delete or modify the following code line
-    return string();
+    return lname;
 }
 
 template <typename Comparable>
 string Student<Comparable>::getDepartment()
 {
-    // Add your code: you can delete or modify the following code line
-    return string();
+    return department;
 }
 
 template <typename Comparable>
 string Student<Comparable>::getGPA()
 {
-    // Add your code: you can delete or modify the following code line
-    return string();
+    return gpa;
 }
 
 template <typename Comparable>
 void Student<Comparable>::setFirstName(Comparable name)
 {
-    // Add your code
+    fname = name;
 }
 
 template <typename Comparable>
 void Student<Comparable>::setLastName(Comparable name)
 {
-    // Add your code
+    lname = name;
 }
 template <typename Comparable>
 void Student<Comparable>::setDepartment(Comparable dept)
 {
-    // Add your code
+    department = dept;
 }
 
 template <typename Comparable>
 void Student<Comparable>::setGPA(Comparable gpa)
 {
-    // Add your code
+    this->gpa = gpa;
 }

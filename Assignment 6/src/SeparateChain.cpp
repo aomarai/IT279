@@ -14,8 +14,7 @@ HashTable<HashedObj>::HashTable(int size) : currentSize{0}
 template <typename HashedObj>
 size_t HashTable<HashedObj>::myhash(const HashedObj &x) const
 {
-    // Add your code: you can delete or modify the following code line
-    return 0;
+    return x % theLists.size();
 }
 
 /**
@@ -24,8 +23,7 @@ size_t HashTable<HashedObj>::myhash(const HashedObj &x) const
 template <typename HashedObj>
 size_t HashTable<HashedObj>::hash(const HashedObj &key) const
 {
-    // Add your code: you can delete or modify the following code line
-    return 0;
+    return key % theLists.size();
 }
 
 /**
@@ -37,8 +35,17 @@ size_t HashTable<HashedObj>::hash(const HashedObj &key) const
 template <typename HashedObj>
 bool HashTable<HashedObj>::insert(const HashedObj &x, Student<string> &s)
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    size_t currentPos = hash(x);
+    if (theLists[currentPos].find(x))
+    {
+        return false;
+    }
+    else
+    {
+        theLists[currentPos].insert(x, s);
+        currentSize++;
+        return true;
+    }
 }
 
 /**
@@ -48,8 +55,16 @@ bool HashTable<HashedObj>::insert(const HashedObj &x, Student<string> &s)
 template <typename HashedObj>
 bool HashTable<HashedObj>::update(const HashedObj &x, Student<string> &s)
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    size_t currentPos = hash(x);
+    if (theLists[currentPos].find(x))
+    {
+        theLists[currentPos].update(x, s);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 /**
@@ -59,13 +74,22 @@ bool HashTable<HashedObj>::update(const HashedObj &x, Student<string> &s)
 template <typename HashedObj>
 bool HashTable<HashedObj>::remove(const HashedObj &x)
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    size_t currentPos = hash(x);
+    if (theLists[currentPos].find(x))
+    {
+        theLists[currentPos].remove(x);
+        currentSize--;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 /**
- * If the x (student id) is found, print out student information whose id == x
- * return true.
+ * If x (student id) is found, print out student information whose id == x
+ * and return true.
  * Otherwise, print out "x was not found" and return false
  * You should use bool printNodeInfo(const Comparable &x)
  * in BinarySearchTree class
@@ -73,8 +97,17 @@ bool HashTable<HashedObj>::remove(const HashedObj &x)
 template <typename HashedObj>
 bool HashTable<HashedObj>::printNodeInfo(const HashedObj &x)
 {
-    // Add your code: you can delete or modify the following code line
-    return true;
+    size_t currentPos = hash(x);
+    if (theLists[currentPos].find(x))
+    {
+        theLists[currentPos].printNodeInfo(x);
+        return true;
+    }
+    else
+    {
+        cout << x << " was not found" << endl;
+        return false;
+    }
 }
 
 /**
@@ -83,7 +116,11 @@ bool HashTable<HashedObj>::printNodeInfo(const HashedObj &x)
 template <typename HashedObj>
 void HashTable<HashedObj>::displayHash()
 {
-    // Add your code
+    for (int i = 0; i < theLists.size(); i++)
+    {
+        cout << i << " -> ";
+        theLists[i].printTree();
+    }
 }
 
 /**
@@ -92,5 +129,9 @@ void HashTable<HashedObj>::displayHash()
 template <typename HashedObj>
 void HashTable<HashedObj>::makeEmpty()
 {
-    // Add your code
+    for (int i = 0; i < theLists.size(); i++)
+    {
+        theLists[i].makeEmpty();
+    }
+    currentSize = 0;
 }
