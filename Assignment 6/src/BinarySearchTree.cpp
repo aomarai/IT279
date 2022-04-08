@@ -300,7 +300,8 @@ bool BinarySearchTree<Comparable>::printNodeInfo(const Comparable &x, BinaryNode
     }
     else
     {
-        cout << "Node Information: " << t->val << endl;
+        cout << "Student information: " << endl;
+        cout << t->val << endl;
         return true; // Match
     }
 }
@@ -323,11 +324,10 @@ void BinarySearchTree<Comparable>::printTree(ostream &out)
 template <typename Comparable>
 void BinarySearchTree<Comparable>::printTree(BinaryNode *t, ostream &out)
 {
-    if (t != nullptr)
+    if( t != nullptr )
     {
-        cout << t->element << " ";      
-		printTree(t->left, out);
-
-        printTree(t->right, out);
+        printTree( t->left, out );
+        cout << t->element << "->";
+        printTree( t->right, out );
     }
 }
