@@ -175,14 +175,14 @@ void BinarySearchTree<Comparable>::insert(const Comparable &x, Student<string> &
 template <typename Comparable>
 void BinarySearchTree<Comparable>::insert(const Comparable &x, Student<string> &val, BinaryNode *&t)
 {
-    if( t == nullptr )
-        t = new BinaryNode{ x, val, nullptr, nullptr };
-    else if( x < t->element )
-        insert( x, t->left );
-    else if( t->element < x )
-        insert( x, t->right );
+    if (t == nullptr)
+        t = new BinaryNode{std::move(x), val, nullptr, nullptr};
+    else if (x < t->element)
+        insert(std::move(x), val, t->left);
+    else if (t->element < x)
+        insert(std::move(x), val, t->right);
     else
-    ; // Duplicate; do nothing
+        ; // Duplicate; do nothing
 }
 
 /**
@@ -251,11 +251,11 @@ bool BinarySearchTree<Comparable>::update(const Comparable &x, Student<string> &
     }
     else if( x < t->element )
     {
-        return printNodeInfo( x, val, t->left );
+        return update( x, val, t->left );
     }
     else if( t->element < x )
     {
-        return printNodeInfo( x, val, t->right );
+        return update( x, val, t->right );
     }
     else
     {
@@ -273,7 +273,7 @@ bool BinarySearchTree<Comparable>::update(const Comparable &x, Student<string> &
 template <typename Comparable>
 bool BinarySearchTree<Comparable>::printNodeInfo(const Comparable &x) const
 {
-    printNodeInfo(x, root);
+    return printNodeInfo(x, root);
 }
 
 /**
@@ -300,8 +300,7 @@ bool BinarySearchTree<Comparable>::printNodeInfo(const Comparable &x, BinaryNode
     }
     else
     {
-        cout << "Student information: " << endl;
-        cout << t->val << endl;
+        cout << t->val.getFirstName() << " " << t->val.getLastName() << " " << t->val.getDepartment() << " " << t->val.getGPA() << endl;
         return true; // Match
     }
 }
@@ -312,7 +311,7 @@ bool BinarySearchTree<Comparable>::printNodeInfo(const Comparable &x, BinaryNode
 template <typename Comparable>
 void BinarySearchTree<Comparable>::printTree(ostream &out)
 {
-    print(root, out);
+    printTree(root, out);
 }
 
 /**
@@ -327,7 +326,7 @@ void BinarySearchTree<Comparable>::printTree(BinaryNode *t, ostream &out)
     if( t != nullptr )
     {
         printTree( t->left, out );
-        cout << t->element << "->";
+        cout << t->element << " -> ";
         printTree( t->right, out );
     }
 }

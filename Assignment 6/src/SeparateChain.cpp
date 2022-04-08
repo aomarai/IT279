@@ -14,7 +14,7 @@ HashTable<HashedObj>::HashTable(int size) : currentSize{0}
 template <typename HashedObj>
 size_t HashTable<HashedObj>::myhash(const HashedObj &x) const
 {
-    return x % theLists.size();
+    return hash(x) % theLists.size();
 }
 
 /**
@@ -23,7 +23,7 @@ size_t HashTable<HashedObj>::myhash(const HashedObj &x) const
 template <typename HashedObj>
 size_t HashTable<HashedObj>::hash(const HashedObj &key) const
 {
-    return key % theLists.size();
+    return key;
 }
 
 /**
@@ -35,8 +35,8 @@ size_t HashTable<HashedObj>::hash(const HashedObj &key) const
 template <typename HashedObj>
 bool HashTable<HashedObj>::insert(const HashedObj &x, Student<string> &s)
 {
-    size_t currentPos = hash(x);
-    if (theLists[currentPos].find(x))
+    size_t currentPos = myhash(x);
+    if (theLists[currentPos].contains(x))
     {
         return false;
     }
@@ -49,22 +49,14 @@ bool HashTable<HashedObj>::insert(const HashedObj &x, Student<string> &s)
 }
 
 /**
- * Find whether id == x is in the database, if found, update the student information
+ * Find whether id == x is in the database, if found, update the student information with s
  * and return true. Otherwise, return false
  */
 template <typename HashedObj>
 bool HashTable<HashedObj>::update(const HashedObj &x, Student<string> &s)
 {
     size_t currentPos = hash(x);
-    if (theLists[currentPos].find(x))
-    {
-        theLists[currentPos].update(x, s);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return theLists[currentPos].update(x, s);
 }
 
 /**
@@ -75,7 +67,7 @@ template <typename HashedObj>
 bool HashTable<HashedObj>::remove(const HashedObj &x)
 {
     size_t currentPos = hash(x);
-    if (theLists[currentPos].find(x))
+    if (theLists[currentPos].contains(x))
     {
         theLists[currentPos].remove(x);
         currentSize--;
@@ -97,8 +89,8 @@ bool HashTable<HashedObj>::remove(const HashedObj &x)
 template <typename HashedObj>
 bool HashTable<HashedObj>::printNodeInfo(const HashedObj &x)
 {
-    size_t currentPos = hash(x);
-    if (theLists[currentPos].find(x))
+    size_t currentPos = myhash(x);
+    if (theLists[currentPos].contains(x))
     {
         theLists[currentPos].printNodeInfo(x);
         return true;
@@ -116,10 +108,11 @@ bool HashTable<HashedObj>::printNodeInfo(const HashedObj &x)
 template <typename HashedObj>
 void HashTable<HashedObj>::displayHash()
 {
-    for (int i = 0; i < theLists.size(); i++)
+    for (size_t i = 0; i < theLists.size(); i++)
     {
         cout << i << " -> ";
         theLists[i].printTree();
+        cout << endl;
     }
 }
 
