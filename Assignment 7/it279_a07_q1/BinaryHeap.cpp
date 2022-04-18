@@ -140,6 +140,7 @@ void printHeap()
     cout << endl;
 }
 
+//TODO: Finish this
 template <typename Comparable>
 vector<Comparable> heapsort()
 {
@@ -150,5 +151,8 @@ vector<Comparable> heapsort()
     {
         sorted.push_back(array[i]);
     }
+
+    //Sort vector with heapsort
+    
     return sorted; 
 }
