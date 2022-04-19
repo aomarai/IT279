@@ -1,10 +1,9 @@
 #include "BinaryHeap.h"
+#include "dsexceptions.h"
 
 template <typename Comparable>
-BinaryHeap<Comparable>::BinaryHeap(int capacity)
+BinaryHeap<Comparable>::BinaryHeap(int capacity) : array(capacity + 1), currentSize(0)
 {
-    array.reserve(capacity);
-    currentSize = 0;
 }
 
 template <typename Comparable>
@@ -28,7 +27,7 @@ void BinaryHeap<Comparable>::insert(const Comparable &x)
     array[hole] = move(array[0]);
 }
 
-template <typename Comparable>
+template <class Comparable>
 bool BinaryHeap<Comparable>::isEmpty() const
 {
     return currentSize == 0;
@@ -41,7 +40,7 @@ void BinaryHeap<Comparable>::makeEmpty()
 }
 
 template <typename Comparable>
-void deleteMax()
+void BinaryHeap<Comparable>::deleteMax()
 {
     if (isEmpty())
     {
@@ -52,7 +51,7 @@ void deleteMax()
 }
 
 template <typename Comparable>
-void deleteMax(Comparable &maxItem)
+void BinaryHeap<Comparable>::deleteMax(Comparable &maxItem)
 {
     if (isEmpty())
     {
@@ -64,7 +63,7 @@ void deleteMax(Comparable &maxItem)
 }
 
 template <typename Comparable>
-const Comparable &findMax()
+const Comparable BinaryHeap<Comparable>::*findMax()
 {
     if (isEmpty())
     {
@@ -74,7 +73,7 @@ const Comparable &findMax()
 }
 
 template <typename Comparable>
-void updateVal(int p, Comparable newValue)
+void BinaryHeap<Comparable>::updateVal(int p, Comparable newValue)
 {
     if (p < 1 || p > currentSize)
     {
@@ -85,7 +84,7 @@ void updateVal(int p, Comparable newValue)
 }
 
 template <typename Comparable>
-void deleteVal(int p, Comparable &val)
+void BinaryHeap<Comparable>::deleteVal(int p, Comparable &val)
 {
     if (p < 1 || p > currentSize)
     {
@@ -97,7 +96,7 @@ void deleteVal(int p, Comparable &val)
 }
 
 template <typename Comparable>
-void percolateDown(int hole)
+void BinaryHeap<Comparable>::percolateDown(int hole)
 {
     int child;
     Comparable tmp = move(array[hole]);
@@ -122,7 +121,7 @@ void percolateDown(int hole)
 }
 
 template <typename Comparable>
-void buildHeap()
+void BinaryHeap<Comparable>::buildHeap()
 {
     for (int i = currentSize / 2; i > 0; i--)
     {
@@ -131,7 +130,7 @@ void buildHeap()
 }
 
 template <typename Comparable>
-void printHeap()
+void BinaryHeap<Comparable>::printHeap()
 {
     for (int i = 1; i <= currentSize; i++)
     {
@@ -140,11 +139,12 @@ void printHeap()
     cout << endl;
 }
 
-//TODO: Finish this
 template <typename Comparable>
-vector<Comparable> heapsort()
+vector<Comparable> BinaryHeap<Comparable>::heapsort()
 {
     vector<Comparable> sorted;
+
+    int currentSize = array[0];
     
     //Copy old vector to sorted vector
     for (int i = 1; i <= currentSize; i++)
@@ -153,6 +153,12 @@ vector<Comparable> heapsort()
     }
 
     //Sort vector with heapsort
+    for (int i = currentSize; i > 0; i--)
+    {
+        sorted[i] = move(array[1]);
+        array[1] = move(array[i]);
+        percolateDown(1);
+    }
     
     return sorted; 
 }

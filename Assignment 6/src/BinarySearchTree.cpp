@@ -1,4 +1,6 @@
 #include "BinarySearchTree.h"
+#include "dsexceptions.h"
+
 using namespace std;
 
 // BinarySearchTree class
