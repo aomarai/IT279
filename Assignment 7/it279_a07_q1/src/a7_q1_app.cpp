@@ -22,7 +22,7 @@ int main()
         cout << "\n-----------------------------------------------------------------" << endl;
         cout << "Test0:" << endl;
         std::vector<int> temp{68, 40, 60, 86, 45, 26, 99, 54, 3};
-        for (int i = 0; i < temp.size(); i++)
+        for (size_t i = 0; i < temp.size(); i++)
         {
             h.insert(temp.at(i));
         }
@@ -36,7 +36,7 @@ int main()
 
         vector<int> sortResult = h.heapsort();
         cout << "Sorted array in descending order: ";
-        for (int i = 0; i < sortResult.size(); i++)
+        for (size_t i = 0; i < sortResult.size(); i++)
         {
             cout << sortResult.at(i) << " ";
         }
@@ -111,7 +111,7 @@ int main()
 
         vector<int> sortResult = h.heapsort();
         cout << "Sorted array in descending order: ";
-        for (int i = 0; i < sortResult.size(); i++)
+        for (size_t i = 0; i < sortResult.size(); i++)
         {
             cout << sortResult.at(i) << " ";
         }
