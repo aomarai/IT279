@@ -1,5 +1,6 @@
 #include "BinaryHeap.h"
 #include "dsexceptions.h"
+#include "Student.h"
 
 template <typename Comparable>
 BinaryHeap<Comparable>::BinaryHeap(int capacity) : currentSize(0), array(capacity + 1)
@@ -7,7 +8,7 @@ BinaryHeap<Comparable>::BinaryHeap(int capacity) : currentSize(0), array(capacit
 }
 
 template <typename Comparable>
-void BinaryHeap<Comparable>::insert(const Comparable &x)
+void BinaryHeap<Comparable>::insert(Student<string> &stu)
 {
     // Expand heap if full
     if (currentSize == (int)array.size() - 1)
@@ -17,10 +18,10 @@ void BinaryHeap<Comparable>::insert(const Comparable &x)
 
     // Percolate up
     int hole = currentSize++;
-    Comparable copy = x;
+    Comparable copy = stu;
 
     array[0] = move(copy);
-    for (; x < array[hole / 2]; hole /= 2)
+    for (; stu < array[hole / 2]; hole /= 2)
     {
         array[hole] = move(array[hole / 2]);
     }
@@ -51,7 +52,7 @@ void BinaryHeap<Comparable>::deleteMax()
 }
 
 template <typename Comparable>
-void BinaryHeap<Comparable>::deleteMax(Comparable &maxItem)
+void BinaryHeap<Comparable>::deleteMax(Student<string> &maxItem)
 {
     if (isEmpty())
     {
@@ -63,7 +64,7 @@ void BinaryHeap<Comparable>::deleteMax(Comparable &maxItem)
 }
 
 template <typename Comparable>
-const Comparable &BinaryHeap<Comparable>::findMax() const
+const Student<string> &BinaryHeap<Comparable>::findMax() const
 {
     if (isEmpty())
     {
@@ -73,10 +74,8 @@ const Comparable &BinaryHeap<Comparable>::findMax() const
 }
 
 template <typename Comparable>
-void BinaryHeap<Comparable>::updateVal(int p, Comparable newValue)
+void BinaryHeap<Comparable>::updateStudent(int p, Student<string> newValue)
 {
-    //Debug print
-    printf("Updating value at index %d while currentSize is %d\n", p, currentSize);
     if (p < 1 || p > currentSize)
     {
         throw ArrayIndexOutOfBoundsException();
@@ -86,7 +85,7 @@ void BinaryHeap<Comparable>::updateVal(int p, Comparable newValue)
 }
 
 template <typename Comparable>
-void BinaryHeap<Comparable>::deleteVal(int p, Comparable &val)
+void BinaryHeap<Comparable>::deleteStudent(int p, Student<string> &val)
 {
     if (p < 1 || p > currentSize)
     {
@@ -136,9 +135,9 @@ void BinaryHeap<Comparable>::printHeap()
 }
 
 template <typename Comparable>
-vector<Comparable> BinaryHeap<Comparable>::heapsort()
+vector<Student<string>> BinaryHeap<Comparable>::heapsort()
 {
-    vector<Comparable> sortedArray;
+    vector<Student<string>> sortedArray;
 
     // Copy contents of heap into sortedArray
     for (int i = 1; i <= currentSize; i++)
