@@ -28,7 +28,7 @@ public:
     // Throws Underflow if empty.
     void deleteMax(Student<string> &stuWithMaxId);
 
-    // Insert a new student into the heap, allowing duplicates.
+    // Insert a new student into the heap, allowing duplicates by using the student object's ID as the key. The 0th index is the size of the heap and shouldn't be inserted into.
     void insert(Student<string> &stu);
 
     // Update the current student of binary heap at index position p by a new student 

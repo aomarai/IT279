@@ -55,3 +55,15 @@ void Student<Comparable>::setGPA(Comparable gpa)
 {
     this->gpa = gpa;
 }
+
+template <typename Comparable>
+int Student<Comparable>::getId()
+{
+    return id;
+}
+
+template <typename Comparable>
+void Student<Comparable>::setId(int id)
+{
+    this->id = id;
+}

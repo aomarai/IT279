@@ -8,7 +8,7 @@ CXXFLAGS = -std=c++11 -Wall
 LDFLAGS = 
 
 # Makefile settings - Can be customized.
-APPNAME = assign07_q1_ashkan
+APPNAME = assign07_q2_ashkan
 EXT = .cpp
 SRCDIR = src
 OBJDIR = obj
