@@ -25,8 +25,8 @@ public:
     // function to insert key into hash table
     void insertHash(Student<string> &val);
 
-    // function to search the student information who id is key
-    // If search is successful, return ture, otherwise, return false
+    // function to search for the student information whose id is the key
+    // If search is successful, return true, otherwise, return false
     // bucketId: bucket id in hash table
     // val: student object
     bool search(HashedObj key, HashedObj &bucketId, Student<string> &val);
