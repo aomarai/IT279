@@ -1,12 +1,15 @@
 #include "DoubleHash.h"
 
 template <typename HashedObj>
-DoubleHash<HashedObj>::DoubleHash(int size)
+DoubleHash<HashedObj>::DoubleHash(int size) : tableSize{size}
 {
-    // Initialize hashtable
-    tableSize = size;
     hashTable = new Student<string>[tableSize];
     curr_size = 0;
+
+    for (int i = 0; i < tableSize; i++)
+    {
+        hashTable[i].setId(-1);
+    }
 }
 
 template <typename HashedObj>
@@ -18,161 +21,138 @@ bool DoubleHash<HashedObj>::isFull()
 template <typename HashedObj>
 int DoubleHash<HashedObj>::hash1(HashedObj key)
 {
-    // Calculate the first hash
-    return key % tableSize;
+    return key.getId() % tableSize;
 }
 
 template <typename HashedObj>
 int DoubleHash<HashedObj>::hash2(HashedObj key)
 {
-    int PRIME = prePrime(tableSize / 2);
+    int PRIME = prePrime (tableSize);
 
-    // Calculate the second hash
-    return PRIME - (key % PRIME);
+    return PRIME - (key.getId() % PRIME);
 }
 
-//Store the student object in the hash table using the ID as the key
 template <typename HashedObj>
 void DoubleHash<HashedObj>::insertHash(Student<string> &val)
 {
-    int key = val.getId();
-
-    // if hash table is full
+    // If the hash table is full, return
     if (isFull())
-        return;
-
-    // get index from first hash
-    int index = hash1(key);
-
-    // if collision occurs
-    if (hashTable[index] != -1)
     {
-        // get index2 from second hash
-        int index2 = hash2(key);
+        //cout << "Hash table is full" << endl;
+        return;
+    }
+
+    // Calculate the first hash
+    int firstHash = hash1(val);
+
+    //If there is a collision
+    if (hashTable[firstHash].getId() != -1)
+    {
+        //cout << "Collision" << endl;
+        int secondHash = hash2(val);
         int i = 1;
         while (1)
         {
-            // get newIndex
-            int newIndex = (index + i * index2) % tableSize;
+            //Get new index
+            int newIndex = (firstHash + i * secondHash) % tableSize;
 
-            // if no collision occurs, store the student object in the hash table
-            if (hashTable[newIndex] == -1)
+            //If the index is empty, set the student's bucket id and insert the student
+            if (hashTable[newIndex].getId() == -1)
             {
+                val.setBucketId(newIndex);
                 hashTable[newIndex] = val;
+                curr_size++;
+                //cout << "Inserted after " << i << " collisions" << endl;
                 break;
             }
             i++;
         }
     }
-    else // if no collision occurs
-        hashTable[index] = val;
-    curr_size++;
+    else
+    // No collision so just insert the student
+    {
+        //cout << "No collision" << endl;
+        val.setBucketId(firstHash);
+        hashTable[firstHash] = val;
+        curr_size++;
+    }
 }
 
-// Searches by taking the key and the bucket id
 template <typename HashedObj>
 bool DoubleHash<HashedObj>::search(HashedObj key, HashedObj &bucketId, Student<string> &val)
 {
-    // get index from first hash
-    int index = hash1(key);
+    int firstHash = hash1(key);
+    int secondHash = hash2(key);
+    int i = 0;
 
-    // if no collision occurs
-    if (hashTable[index] == key)
+    while (hashTable[(firstHash + i * secondHash) % tableSize].getId() != key.getId())
     {
-        bucketId = index;
-        val = hashTable[index];
-        return true;
-    }
-    else
-    {
-        // get index2 from second hash
-        int index2 = hash2(key);
-        int i = 1;
-        while (1)
+        if (hashTable[(firstHash + i * secondHash) % tableSize].getId() == -1)
         {
-            // get newIndex
-            int newIndex = (index + i * index2) % tableSize;
-
-            // if no collision occurs, store the key
-            if (hashTable[newIndex] == key)
-            {
-                bucketId = newIndex;
-                val = hashTable[newIndex];
-                return true;
-            }
-            i++;
+            return false;
         }
+        i++;
     }
-    return false;
+    // If the student is found, return true
+    bucketId = (firstHash + i * secondHash) % tableSize;
+    val = hashTable[bucketId];
+    return true;
 }
 
 template <typename HashedObj>
 bool DoubleHash<HashedObj>::search(HashedObj bucketId, Student<string> &val)
 {
-    // if no collision occurs
-    if (hashTable[bucketId] != -1)
+    if (hashTable[bucketId].getId() == -1)
+    {
+        return false;
+    }
+    else
     {
         val = hashTable[bucketId];
         return true;
     }
-    return false;
 }
 
 template <typename HashedObj>
 bool DoubleHash<HashedObj>::update(Student<string> &val)
 {
-    int key = val.getId();
-
-    // get index from first hash
-    int index = hash1(key);
-
-    // if no collision occurs
-    if (hashTable[index] == key)
+    //Search for the student
+    HashedObj bucketId;
+    Student<string> temp;
+    if (search(val.getId(), bucketId, temp))
     {
-        hashTable[index] = val;
+        // If the student is found, update the student
+        hashTable[bucketId] = val;
         return true;
     }
     else
     {
-        // get index2 from second hash
-        int index2 = hash2(key);
-        int i = 1;
-        while (1)
-        {
-            // get newIndex
-            int newIndex = (index + i * index2) % tableSize;
-
-            // if no collision occurs, store the key
-            if (hashTable[newIndex] == key)
-            {
-                hashTable[newIndex] = val;
-                return true;
-            }
-            i++;
-        }
+        return false;
     }
-    return false;
 }
 
 template <typename HashedObj>
 void DoubleHash<HashedObj>::displayHash()
 {
+    cout << "Bucket Index\t\t" << "Student Information" << endl;
     for (int i = 0; i < tableSize; i++)
     {
-        if (hashTable[i] != -1)
-            cout << i << ": " << hashTable[i] << endl;
+        if (hashTable[i].getId() != -1)
+        {
+            //Print out all of the students info with spaces between them
+         cout << i << " --> " << hashTable[i].getId() << " " << hashTable[i].getFirstName() << " " << hashTable[i].getLastName() << " " << hashTable[i].getDepartment() << " " << hashTable[i].getGPA() << endl;
+        }
     }
 }
 
 template <typename HashedObj>
-bool DoubleHash<HashedObj>::isSameDept(Student<string> stu1, Student<string> stu2)
+bool DoubleHash<HashedObj>::isSameDept(Student<string> std1, Student<string> std2)
 {
-    return stu1.getDept() == stu2.getDept();
+    return std1.getDepartment() == std2.getDepartment();
 }
 
-
 template <typename HashedObj>
-Student<string> DoubleHash<HashedObj>::getStudent(HashedObj bucketID)
+Student<string> DoubleHash<HashedObj>::getStudent(HashedObj bucketId)
 {
-    return hashTable[bucketID];
+    return hashTable[bucketId];
 }

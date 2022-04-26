@@ -32,11 +32,11 @@ public:
     bool search(HashedObj key, HashedObj &bucketId, Student<string> &val);
 
     // Input bucket index to find student stored in the index, which is stored in val,
-    // return ture. Otherwise, no student stored in the index, return false
+    // return true. Otherwise, no student stored in the index, return false
     bool search(HashedObj bucketId, Student<string> &val);
 
     // function to update the student information who id is key
-    // If update is successful, return ture, otherwise, return false
+    // If update is successful, return true, otherwise, return false
     bool update(Student<string> &val);
 
     // function to display the hash table
