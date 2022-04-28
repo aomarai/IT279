@@ -2,10 +2,10 @@
 #include "Student.cpp"
 #include "DisjSet.h"
 #include "DisjSet.cpp"
-
 #include "DoubleHash.h"
 #include "DoubleHash.cpp"
-//#include "Utilities.h"
+#include "utilities.h"
+
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -55,10 +55,13 @@ int main()
     inFile.clear();
     inFile.seekg(0, ios::beg);
 
-    cout << "Number of lines in the file: " << numLines << endl;
+    //cout << "Number of lines in the file: " << numLines << endl;
 
     // Initialize a hash table
     DoubleHash<Student<string>> hashTable(numLines);
+
+    // Initialize a vector of students
+    vector<Student<string>> students;
 
     // Read the file line by line. The first word is the id, second word is firstName, third word is lastname, fourth word is department, fifth word is gpa
     if (inFile.is_open())
@@ -86,8 +89,10 @@ int main()
             tempStudent.setDepartment(department);
             tempStudent.setGPA(gpa);
 
-            // Insert the student object to the heap
+            // Insert the student object to the hash table and the vector of students
+            students.push_back(tempStudent);
             hashTable.insertHash(tempStudent);
+
         }
 
         //cout << "Finished reading in the file" << endl;
@@ -102,7 +107,14 @@ int main()
     
     // Print out the hash table
     hashTable.displayHash();
-    
+
+    // Create a set with a student to union into
+    // DisjSet<Student<string>> stuSet(students[0]);
+
+    // for (int i = 1; i < students.size(); i++)
+    // {
+    //     stuSet.Union(students[i], students[i - 1]);
+    // }
 
     return 0;
 }

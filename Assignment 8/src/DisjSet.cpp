@@ -6,23 +6,27 @@ DisjSet<Comparable>::DisjSet(Comparable n)
     rank = new Comparable[n];
     parent = new Comparable[n];
     this->n = n;
-    for (Comparable i = 0; i < n; i++)
-    {
-        rank[i] = 0;
-        parent[i] = i;
-    }
+    makeSet(n);
 }
 
 template <typename Comparable>
 void DisjSet<Comparable>::makeSet(Comparable i)
 {
-    parent[i] = i;
+    for (int i = 0; i < n; i++)
+    {
+        parent[i] = i;
+    }
 }
 
 // Finds set of given item x using path compression
 template <typename Comparable>
 Comparable DisjSet<Comparable>::find(Comparable x)
 {
+    if (x != parent[x])
+    {
+        parent[x] = find(parent[x]);
+    }
+    return parent[x];
 }
 
 // Do union of two sets represented by x and y using union by rank
@@ -32,7 +36,9 @@ bool DisjSet<Comparable>::Union(Comparable x, Comparable y)
     Comparable xRoot = find(x);
     Comparable yRoot = find(y);
     if (xRoot == yRoot)
+    {
         return false;
+    }
     if (rank[xRoot] < rank[yRoot])
     {
         parent[xRoot] = yRoot;

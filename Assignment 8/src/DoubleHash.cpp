@@ -140,7 +140,7 @@ void DoubleHash<HashedObj>::displayHash()
         if (hashTable[i].getId() != -1)
         {
             //Print out all of the students info with spaces between them
-         cout << i << " --> " << hashTable[i].getId() << " " << hashTable[i].getFirstName() << " " << hashTable[i].getLastName() << " " << hashTable[i].getDepartment() << " " << hashTable[i].getGPA() << endl;
+         cout << i << " -------> " << hashTable[i].getId() << " ( " << hashTable[i].getFirstName() << " " << hashTable[i].getLastName() << " " << hashTable[i].getDepartment() << " " << hashTable[i].getGPA() << " ) " << endl;
         }
     }
 }

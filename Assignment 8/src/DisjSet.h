@@ -17,7 +17,7 @@ public:
     DisjSet(Comparable n);
     // Creates n single item sets
     void makeSet(Comparable i);
-    // Finds set of given item x
+    // Finds set of given item x using path compression
     Comparable find(Comparable x);
     // Do union of two sets represented by x and y.
     bool Union(Comparable x, Comparable y);
